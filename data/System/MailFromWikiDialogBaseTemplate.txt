@@ -1,0 +1,64 @@
+%TMPL:INCLUDE{"view"}%
+
+%{"simple layout, no leftbar, scripts, etc..."}%
+%TMPL:DEF{"main"}%
+<div class="foswikiPage">
+        <span class="title">%TMPL:P{"Title"}%</span>
+        <span class="sendingmessage">%TMPL:P{"SendingMessage"}%</span>
+        <div class="dialogContents">%TMPL:P{"contents"}%%TMPL:P{"buttons"}%</div>
+</div>
+%TMPL:END%
+%TMPL:DEF{"document"}%%TMPL:P{"htmldoctype"}%%TMPL:P{"htmlstart"}%
+%TMPL:P{"bodystart"}%%TMPL:P{"main"}%%TMPL:P{"bodyend"}%%TMPL:P{"htmlend"}%%TMPL:END%
+
+%{"Text to display in the 'To' input field. Will be overwritten by 'To' when sending."}%
+%TMPL:DEF{"ToDisplay"}%%TMPL:P{"To"}%%TMPL:END%
+
+%{"blockUI message while sending mail. The <h1></h1> needs to be escaped."}%
+%TMPL:DEF{"SendingMessage"}%&#60;h1&#62;%MAKETEXT{"sending mail..."}%&#60;/h1&#62;%TMPL:END%
+
+%{"Title for the dialog."}%
+%TMPL:DEF{"Title"}%%MAKETEXT{"Send mail to [_1]" args="%TMPL:P{"ToDisplay"}%"}%%TMPL:END%
+
+%{"Template for the subject line."}%
+%TMPL:DEF{"subjectTemplate"}%%MAKETEXT{"Question about [_1]" args="%WEB%.%TOPIC%"}%%TMPL:END%
+
+%{"Template for the body."}%
+%TMPL:DEF{"bodyTemplate"}%%MAKETEXT{"Ask your question here..."}%%TMPL:END%
+
+%{"Editor for the body of the mail."}%
+%TMPL:DEF{"bodyEditor"}%<textarea name="body" rows="15" style="resize: none;">%TMPL:P{"bodyTemplate"}%</textarea>%TMPL:END%
+
+%{"Layout for the dialog"}%
+%TMPL:DEF{"dialogLayout"}%<table style="border: none; width: 100%;">
+<colgroup>
+ <col width="100px;" />
+ <col />
+</colgroup>
+<tr>
+ <td><label for="to">%MAKETEXT{"Recipient: "}%</label></td>
+ <td><input type="textboxlist" size="40" name="to" readonly="readonly" class="foswikiInputFieldReadOnly" value="%TMPL:P{"ToDisplay"}%" /></td>
+</tr>
+<tr>
+ <td><label for="subject">%MAKETEXT{"Subject: "}%</label></td>
+ <td><input type="text" size="40" name="subject" class="foswikiInputField" value="%TMPL:P{"subjectTemplate"}%" /></td>
+</tr>
+<tr>
+ <td colspan="2">%TMPL:P{"bodyEditor"}%</td>
+</tr>
+</table>%TMPL:END%
+
+%TMPL:DEF{"contents"}%
+<form action="%SCRIPTURL{restauth}%/MailFromWikiPlugin/sendmail" method="post">
+<input type="hidden" name="fromweb" value="%WEB%" />
+<input type="hidden" name="fromtopic" value="%TOPIC%" />
+<input type="hidden" name="mailtemplate" value="%URLPARAM{"customize"}%" />
+%TMPL:P{"dialogLayout"}%
+</form>
+%TMPL:END%
+
+%{"Buttons to send/cancel the mail."}%
+%TMPL:DEF{"buttons"}%
+<a class="jqUIDialogButton jqUIDialogSubmit {icon: 'ui-icon-circle-check'}">%MAKETEXT{"send mail"}%</a>
+<a class="jqUIDialogButton jqUIDialogClose {icon: 'ui-icon-cancel'}">%MAKETEXT{"Cancel"}%</a>
+%TMPL:END%
