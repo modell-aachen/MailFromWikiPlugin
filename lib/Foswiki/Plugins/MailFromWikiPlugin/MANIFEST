@@ -1,0 +1,9 @@
+!noci
+data/System/MailFromWikiDialogBaseTemplate.txt 0644
+data/System/MailFromWikiMailBaseTemplate.txt 0644
+data/System/MailFromWikiPlugin.txt 0644 Plugin doc page
+lib/Foswiki/Plugins/MailFromWikiPlugin.pm 0444 Plugin Perl module
+lib/Foswiki/Plugins/MailFromWikiPlugin/Config.spec 0444
+locale/MailFromWikiPlugin/de.po 0644
+pub/System/MailFromWikiPlugin/mailfromwiki.js 0644
+templates/mailfromwiki.tmpl 0644

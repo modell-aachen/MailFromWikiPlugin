@@ -1,0 +1,15 @@
+%{"Set the recipient:"}%
+%TMPL:DEF{"To"}%%URLPARAM{"to"}%%TMPL:END%
+
+%{"Set subject:"}%
+%TMPL:DEF{"Subject"}%%URLPARAM{"subject"}%%TMPL:END%
+
+%{"Body of the mail:"}%
+%TMPL:DEF{"mailContents"}%
+%URLPARAM{"body"}%
+----
+%MAKETEXT{"You received this mail, because you are registered in [_1]. If you think you shouldn't have got this message, please contact [_2]." args="%WIKITOOLNAME%,%WIKIWEBMASTER%"}%
+%TMPL:END%
+
+%{"Message to be displayed on success:"}%
+%TMPL:DEF{"SuccessMessage"}%Mail send%TMPL:END%

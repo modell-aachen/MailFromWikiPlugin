@@ -1,0 +1,7 @@
+%{"--- Additional definitions. You rarely need to modify them. ---"}%
+
+%{"Charset of the mail"}%
+%TMPL:DEF{"Charset"}%charset="utf-8";%TMPL:END%
+
+%{"Set Content-Type (to ether text/plain or text/html)"}%
+%TMPL:DEF{"Type"}%text/plain%TMPL:END%

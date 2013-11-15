@@ -1,0 +1,73 @@
+%META:TOPICPARENT{name="Plugins"}%
+---+ MailFromWikiPlugin
+
+%SHORTDESCRIPTION%
+
+If you click the marked text in your wiki, a dialog will appear. Upon submit the server will send the mail.
+
+---++ Configuration
+There are four steps involved in order to enable the mailing functionality:
+   * Think of an identifier for your mail
+   * Add a &lt;span&gt; tag around the clickable string
+   * Create a template for the mail
+   * Create a template for the dialog
+
+---+++ Making up the identifier
+This is just a name. It should contain only roman letters for browser/wiki compatibility.%BR%
+For example if you want to mail the responsible person of a page, your identifier could be "Responsible".
+
+---+++ Adding the &lt;span&gt;
+You have to add a span around the clickable text. This span has to have two classes:
+   * wikimailto
+   * template_XXX
+where XXX is the identifier for the template. In the example above this could look like this:
+<pre>
+&lt;span class="wikimailto template_Responsible"&gt;&lt;img src="%%NOP%PUBURLPATH%/%%NOP%SYSTEMWEB%/FamFamFamSilkIcons/email.png" /&gt;&amp;nbsp;Send Mail&lt;span&gt;
+</pre>
+
+---+++ Creating a template for the mail
+Here you need to define who to send the mail to and the general look of the mail. All macros will be expanded before the mail is beeing send. These definitions are the most interesting ones:
+   * To: The recipient
+   * Subject: The subject line (note that the subject entered in the default dialog can be accessed with %%NOP%URLPARAM{"subject"}%)
+   * mailContents: The body of the mail (note that the body entered in the default dialog can be accessed with %%NOP%URLPARAM{"body"}%)
+For the _Responsible_ example this template could look like this:
+<pre>
+%%NOP%TMPL:INCLUDE{"MailFromWikiMailBase"}%
+
+%%NOP%{"Set the recipient:"}%
+%%NOP%TMPL:DEF{"To"}%%%NOP%QUERY{"'%%NOP%WEB%.%%NOP%TOPIC%'/Responsible"}%%%NOP%TMPL:END%
+
+%%NOP%{"Set subject:"}%
+%%NOP%TMPL:DEF{"Subject"}%%%NOP%URLPARAM{"subject"}%%%NOP%TMPL:END%
+
+%%NOP%{"Body of the mail with footer"}%
+%%NOP%TMPL:DEF{"mailContents"}%
+%%NOP%URLPARAM{"body"}%
+---
+You received this mail, because you are responsible for the site %%NOP%WIKITOOLNAME%/%%NOP%WEB%.%%NOP%TOPIC%
+%%NOP%TMPL:END%
+</pre>
+
+---+++ Creating a template for the dialog
+Even if you want to use the default dialog you need to create a dialog template. It should include =MailFromWikiDialogBase= and the template for the mail.%BR%
+For the above example it could look like this:
+<pre>
+%TMPL:INCLUDE{"MailFromWikiDialogBase"}%
+%TMPL:INCLUDE{"MailFromWikiResponsible"}%
+</pre>
+
+---++ Installation
+%$INSTALL_INSTRUCTIONS%
+
+---++ Plugin Info
+
+|  Author: | Foswiki:Main.PluginAuthor |
+|  Copyright: | &copy; 2012, Foswiki Contributors |
+|  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
+|  Release: | %$RELEASE% |
+|  Version: | %$VERSION% |
+|  Change&nbsp;History: | <!-- versions below in reverse order -->&nbsp; |
+|  XX Mmm 20XX (1.0) | Description of change |
+|  Home: | http://foswiki.org/Extensions/%TOPIC% |
+|  Support: | http://foswiki.org/Support/%TOPIC% |
+
